@@ -39,7 +39,7 @@ export class Crypto{
         let srcs = CryptoJS.enc.Utf8.parse(word);
         let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
         let res = encrypted.toString();
-        console.log(res);
+        // console.log(res);
         return res;
     }
 
