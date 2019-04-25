@@ -13,8 +13,8 @@ export class Crypto{
     readonly pubKey:string = '010001' ;        // rsa公钥
 
     // musicSearchResult:any=null;  // 歌曲查找结果
-    originData:any;             // 加密前数据
-    cryptoResult:any;           // 加密结果  
+    originData:any=null;             // 加密前数据
+    cryptoResult:any=null;           // 加密结果  
 
     /**
      * 构造函数，传入需要加密的数据，
