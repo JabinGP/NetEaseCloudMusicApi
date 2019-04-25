@@ -33,7 +33,6 @@ export class MusicUrlHelper{
           result = await Request.post(this.searchUrl, urlData);
           timer++;
         }while (result.data == "" && timer<20);
-
         if (result.data==""){
           return "";
         }else{

@@ -7,6 +7,7 @@ const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
 // let a = MusicManager.getUrlHelper(1311347593);
 // console.log(a);
 async function test(){
+    // 搜索歌曲
     let searchHelper = MusicManager.getSearchHelper({ keyword: "one more time one more chance", limit: 10 });
     console.log(`现在是第${searchHelper.getCurrentPage()}页`);
     console.log(await searchHelper.getSearchResult());
@@ -17,6 +18,16 @@ async function test(){
     console.log(`现在是第${searchHelper.getCurrentPage()}页`);
     console.log(await searchHelper.getSearchResult());
     console.log(searchHelper);
+
+    // 获取歌曲url
+    let songs = await searchHelper.getSearchResult();
+    let musicId  = songs[0].id;
+    let urlHelper = MusicManager.getUrlHelper(musicId);
+    console.log(`歌曲的ID是：${musicId}`);
+    let url = await urlHelper.getUrlResult();
+    console.log(`歌曲的url链接是：${url}`);
+
+
 } 
 test();
 Page({

@@ -14,7 +14,7 @@ export class Request{
               },
               data: data,
               success: function (res) {
-                console.log("at post request: 请求成功")
+                // console.log("at post request: 请求成功")
                 resolve(res)
               },
               fail: function (res) {
