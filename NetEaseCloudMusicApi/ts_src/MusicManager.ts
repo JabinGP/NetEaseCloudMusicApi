@@ -7,12 +7,12 @@ export class MusicManager{
     /**
      * 获取一个用于查询歌曲的对象
      */
-    public static getSearchHelper():MusicSearchHelper{
-        return new MusicSearchHelper();
+    public static getSearchHelper({keyword,limit}):MusicSearchHelper{
+      return new MusicSearchHelper(keyword, limit);
     }
 
-    public static getUrlHelper():MusicUrlHelper{
-        return new MusicUrlHelper();
+    public static getUrlHelper(musicId:number):MusicUrlHelper{
+        return new MusicUrlHelper(musicId);
     }
 
     // /**

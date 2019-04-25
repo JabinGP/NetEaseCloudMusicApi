@@ -16,12 +16,11 @@ export class MusicInfo{
     }
     public static buildByPostResult(postResult):Array<MusicInfo>{
         let songList:Array<MusicInfo> = new Array<MusicInfo>();
-        let songs:any = postResult.result.songs;
+        let songs:any = postResult.data.result.songs;
         for(let song of songs){
-            let newMusicInfo = new MusicInfo(song.id,song.name,song.album.picUrl,song.artists.name);
+            let newMusicInfo = new MusicInfo(song.id,song.name,song.album.picUrl,song.artists[0].name);
             songList.push(newMusicInfo);
         }
-        console.log(songList);  //---------------调试--------------
         return songList;
     }
 }

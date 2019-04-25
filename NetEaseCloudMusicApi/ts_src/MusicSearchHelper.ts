@@ -18,42 +18,33 @@ export class MusicSearchHelper{
     
     // 设定值
     keyword:string;     // 搜索关键字
-    limit:number=0;       // 每一页的最大数量，默认10
+    limit:number=10;       // 每一页的最大数量，默认10
 
     // 运行时迭代值
-    offset:number;      // 当前页码
+    offset:number=0;      // 当前页码
 
-    // 结果集
-    result:Array<MusicInfo>=new Array<MusicInfo>();
-    constructor(keyword:string,offset:number=0){
-        this.offset = offset;
+    constructor(keyword:string,limit:number=10){
+      this.limit = limit;
         this.keyword = keyword;
     }
 
-    // /**
-    //  * 对象解构构造
-    //  * @param param0 对象
-    //  */
-    // public static buildByObject({keyword,offset,limit}):MusicSearchHelper{
-    //     return new MusicSearchHelper(keyword,offset,limit);
-    // }
 
     /**
      * 获取搜索结果
      */
     public async getSearchResult(){
         let searchData = `s=${this.keyword}&limit=${this.limit}&type=1&offset=${this.offset}`;
-        let result = await Request.post(this.searchUrl,searchData);
-        this.result = MusicInfo.buildByPostResult(result);
-        return this.result;
+        let postResult = await Request.post(this.searchUrl,searchData);
+        let result = MusicInfo.buildByPostResult(postResult);
+        return result;
     }
 
     /**
      * 上一页
      */
     public previousPage():MusicSearchHelper{
-        if(this.limit>0){
-            this.limit--;
+        if(this.offset>0){
+          this.offset--;
         };
         return this;
     }
@@ -62,7 +53,7 @@ export class MusicSearchHelper{
      * 下一页
      */
     public nextPage():MusicSearchHelper{
-        this.limit++;
+        this.offset++;
         return this;
     }
 
@@ -70,7 +61,7 @@ export class MusicSearchHelper{
      * 获取当前页数
      */
     public getCurrentPage():number{
-        return this.limit+1;
+      return this.offset+1;
     }
 
     /**

@@ -20,7 +20,8 @@
     "strictPropertyInitialization": true,
     "typeRoots": [
       "typings"
-    ]
+    ],
+    "outDir": "NetEaseCloudMusicApi/src"
   },
   "include": [
     "./**/*.ts"
@@ -31,3 +32,4 @@
     "**/*.spec.ts"
   ]
 }
+
