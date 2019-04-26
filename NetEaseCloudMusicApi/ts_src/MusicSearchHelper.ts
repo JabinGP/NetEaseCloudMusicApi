@@ -64,7 +64,4 @@ export class MusicSearchHelper{
       return this.offset+1;
     }
 
-    /**
-     * 
-     */
 }

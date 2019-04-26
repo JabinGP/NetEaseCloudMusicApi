@@ -36,6 +36,7 @@ export class MusicUrlHelper{
         if (result.data==""){
           return "";
         }else{
+        
           this.result = result.data.data[0].url;
           return this.result;
         }

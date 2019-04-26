@@ -8,27 +8,45 @@ const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
 // console.log(a);
 async function test(){
     // 搜索歌曲
-    let searchHelper = MusicManager.getSearchHelper({ keyword: "one more time one more chance", limit: 10 });
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    searchHelper.nextPage();
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    searchHelper.previousPage();
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    console.log(searchHelper);
+    let musicSearchHelper = MusicManager.getMusicSearchHelper({ keyword: "one more time one more chance", limit: 10 });
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.nextPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.previousPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    console.log(musicSearchHelper);
 
     // 获取歌曲url
-    let songs = await searchHelper.getSearchResult();
+    let songs = await musicSearchHelper.getSearchResult();
     let musicId  = songs[0].id;
-    let urlHelper = MusicManager.getUrlHelper(musicId);
+    let musicUrlHelper = MusicManager.getMusicUrlHelper(musicId);
     console.log(`歌曲的ID是：${musicId}`);
-    let url = await urlHelper.getUrlResult();
+    let url = await musicUrlHelper.getUrlResult();
     console.log(`歌曲的url链接是：${url}`);
 
+    let userSearchHelper = MusicManager.getUserSearchHelper({ userName: "JabinGP", limit: 20 });
+    let users = await userSearchHelper.getSearchResult();
+    console.log(users);
 
-} 
+    let userListHelper = MusicManager.getUserListHelper(users[0].userId);
+    let iLikeList = await userListHelper.getILikeList()
+    console.log(iLikeList);
+
+    let userListDeatilHelper = MusicManager.getUserListDetailHelper(iLikeList.id);
+    let listDetail = await userListDeatilHelper.getDeatil();
+    console.log(listDetail);
+  let timer=0;
+    for(let song of listDetail.tracks){
+      musicUrlHelper.musicId=song.id;
+      console.log(`歌曲的ID是：${musicUrlHelper.musicId}`);
+      let url2 = await musicUrlHelper.getUrlResult();
+      console.log(`歌曲的url链接是：${url2}`);
+      if(timer++>20)break;
+    }
+  }   
 test();
 Page({
   data: {
