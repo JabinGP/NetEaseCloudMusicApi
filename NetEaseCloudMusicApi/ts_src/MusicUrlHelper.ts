@@ -25,12 +25,10 @@ export class MusicUrlHelper{
         }
         let timer =0;
         let cryptoData;
-        let urlData;
         let result: any;
         do{
           cryptoData = Crypto.encrypt(originData);
-          urlData = `params=${cryptoData.params}&encSecKey=${cryptoData.encSecKey}`;
-          result = await Request.post(this.searchUrl, urlData);
+          result = await Request.post(this.searchUrl, cryptoData);
           timer++;
         }while (result.data == "" && timer<20);
         if (result.data==""){

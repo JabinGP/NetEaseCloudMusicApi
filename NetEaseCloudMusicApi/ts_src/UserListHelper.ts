@@ -51,12 +51,10 @@ export class UserListHelper{
         }
         let timer =0;
         let cryptoData;
-        let urlData;
         let postResult: any;
         do{
             cryptoData = Crypto.encrypt(originData);
-            urlData = `params=${cryptoData.params}&encSecKey=${cryptoData.encSecKey}`;
-            postResult = await Request.post(this.searchUrl, urlData);
+            postResult = await Request.post(this.searchUrl, cryptoData);
             timer++;
           }while (postResult.data == "" && timer<20);
         this.userList = UserList.buildByPostResult(postResult);

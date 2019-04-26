@@ -1,6 +1,6 @@
 // 网络请求模块
 export class Request{
-    public static post(url:string,data:string){
+    public static post(url:string,data:any){
         return new Promise((resolve, reject) => {
             wx.request({
               url: url,
@@ -15,6 +15,8 @@ export class Request{
               data: data,
               success: function (res) {
                 // console.log("at post request: 请求成功")
+                // console.log(data);
+                // console.log(res);
                 resolve(res)
               },
               fail: function (res) {
