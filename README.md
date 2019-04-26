@@ -118,17 +118,17 @@ function Encrypt(obj) {
 ```javascript
 const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
 async function test(){
-    // 搜索歌曲
-    let searchHelper = MusicManager.getSearchHelper({ keyword: "one more time one more chance", limit: 10 });
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    searchHelper.nextPage();
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    searchHelper.previousPage();
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    console.log(searchHelper);
+     // 搜索歌曲
+    let musicSearchHelper = MusicManager.getMusicSearchHelper({ keyword: "one more time one more chance", limit: 10 });
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.nextPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.previousPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    console.log(musicSearchHelper);
 } 
 test();
 ```
@@ -149,31 +149,116 @@ const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
 
 async function test(){
     // 搜索歌曲
-    let searchHelper = MusicManager.getSearchHelper({ keyword: "one more time one more chance", limit: 10 });
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    searchHelper.nextPage();
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    searchHelper.previousPage();
-    console.log(`现在是第${searchHelper.getCurrentPage()}页`);
-    console.log(await searchHelper.getSearchResult());
-    console.log(searchHelper);
+    let musicSearchHelper = MusicManager.getMusicSearchHelper({ keyword: "one more time one more chance", limit: 10 });
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.nextPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.previousPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    console.log(musicSearchHelper);
 
     // 获取歌曲url
-    let songs = await searchHelper.getSearchResult();
+    let songs = await musicSearchHelper.getSearchResult();
     let musicId  = songs[0].id;
-    let urlHelper = MusicManager.getUrlHelper(musicId);
+    let musicUrlHelper = MusicManager.getMusicUrlHelper(musicId);
     console.log(`歌曲的ID是：${musicId}`);
-    let url = await urlHelper.getUrlResult();
+    let url = await musicUrlHelper.getUrlResult();
     console.log(`歌曲的url链接是：${url}`);
 } 
 test();
 ```
 ![3](https://upload-images.jianshu.io/upload_images/14225973-ded0cd2b34269afe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+
+### 4.26更新
+新增搜索用户以及用户歌单获取接口
+#### 搜索用户
+MusicManager.getUserSearchHelper()方法，需要传入对象如{ userName: "JabinGP", limit: 20 }，分别代表用户名和最大查询数目
+，调用方法后获取一个UserSearchHelper实例，通过这个实例的getSearchResult()方法获取搜索结果。
+```javascript
+async function test(){
+  // 搜索用户
+  let userSearchHelper = MusicManager.getUserSearchHelper({ userName: "JabinGP", limit: 20 });
+  let users = await userSearchHelper.getSearchResult();
+  console.log(users);
+}
+```
+#### 获取用户歌单
+MusicManager.getUserListHelper()方法，需要传入一个用户id。该方法返回一个UserListHelper实例，通过实例的getILikeList()方法或者getAllLists()方法获取我喜欢列表或者获取所有列表，前者返回一个数组，后者返回一个对象。
+```javascript
+async function test(){
+  // 搜索用户
+  let userSearchHelper = MusicManager.getUserSearchHelper({ userName: "JabinGP", limit: 20 });
+  let users = await userSearchHelper.getSearchResult();
+  console.log(users);
+  
+  // 获取我喜欢歌单
+  let userListHelper = MusicManager.getUserListHelper(users[0].userId);
+  let iLikeList = await userListHelper.getILikeList()
+  console.log(iLikeList);
+ }
+```
+
+#### 通过歌单里的Id获取歌曲url
+与前面一致，不再赘述
+
+#### 完整实例
+完整实例代码在项目page下的index.js中，运行项目就会自动执行输出结果。
+```javascript
+async function test(){
+    // 搜索歌曲
+    let musicSearchHelper = MusicManager.getMusicSearchHelper({ keyword: "one more time one more chance", limit: 10 });
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.nextPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    musicSearchHelper.previousPage();
+    console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
+    console.log(await musicSearchHelper.getSearchResult());
+    console.log(musicSearchHelper);
+
+    // 获取歌曲url
+    let songs = await musicSearchHelper.getSearchResult();
+    let musicId  = songs[0].id;
+    let musicUrlHelper = MusicManager.getMusicUrlHelper(musicId);
+    console.log(`歌曲的ID是：${musicId}`);
+    let url = await musicUrlHelper.getUrlResult();
+    console.log(`歌曲的url链接是：${url}`);
+
+    // 搜索用户
+    let userSearchHelper = MusicManager.getUserSearchHelper({ userName: "JabinGP", limit: 20 });
+    let users = await userSearchHelper.getSearchResult();
+    console.log(users);
+
+    // 获取用户歌单
+    let userListHelper = MusicManager.getUserListHelper(users[0].userId);
+    let iLikeList = await userListHelper.getILikeList()
+    console.log(iLikeList);
+    
+    // 获取我喜欢歌单
+    let userListDeatilHelper = MusicManager.getUserListDetailHelper(iLikeList.id);
+    let listDetail = await userListDeatilHelper.getDeatil();
+    console.log(listDetail);
+    let timer=0;
+    for(let song of listDetail.tracks){
+      musicUrlHelper.musicId=song.id;
+      console.log(`歌曲的ID是：${musicUrlHelper.musicId}`);
+      let url2 = await musicUrlHelper.getUrlResult();
+      console.log(`歌曲的url链接是：${url2}`);
+      if(timer++>20)break;
+    }
+  }   
+test();
+```
+
 ### 结尾
 目前就只有这两个接口，因为我们项目就只需要这两个接口，如果有需要更多接口的，可以在下方评论，以上示例代码都在Github项目上的index.js中，也就是你把文件导入微信开发者工具后，取消勾选一下详情的ES6转ES5以及取消勾选合法域名检验，就可以在控制台看到以上示例代码的输出了
+
+> 2019 4.26更新搜索用户和获取用户歌单以及获取歌单详细三个接口。
 
 *如果对你有帮助，点个Star吧~*
 
