@@ -43,8 +43,8 @@ export class MusicSearchHelper{
      * 上一页
      */
     public previousPage():MusicSearchHelper{
-        if(this.offset>0){
-          this.offset--;
+        if(this.offset-this.limit>=0){
+          this.offset-=this.limit;
         };
         return this;
     }
@@ -53,7 +53,7 @@ export class MusicSearchHelper{
      * 下一页
      */
     public nextPage():MusicSearchHelper{
-        this.offset++;
+        this.offset+=this.limit;
         return this;
     }
 
@@ -61,7 +61,7 @@ export class MusicSearchHelper{
      * 获取当前页数
      */
     public getCurrentPage():number{
-      return this.offset+1;
+      return (this.offset/this.limit)+1;
     }
 
 }

@@ -27,18 +27,21 @@ async function test(){
     let url = await musicUrlHelper.getUrlResult();
     console.log(`歌曲的url链接是：${url}`);
 
+    // 搜索用户
     let userSearchHelper = MusicManager.getUserSearchHelper({ userName: "JabinGP", limit: 20 });
     let users = await userSearchHelper.getSearchResult();
     console.log(users);
 
+    // 获取用户歌单
     let userListHelper = MusicManager.getUserListHelper(users[0].userId);
     let iLikeList = await userListHelper.getILikeList()
     console.log(iLikeList);
-
+    
+    // 获取我喜欢歌单
     let userListDeatilHelper = MusicManager.getUserListDetailHelper(iLikeList.id);
     let listDetail = await userListDeatilHelper.getDeatil();
     console.log(listDetail);
-  let timer=0;
+    let timer=0;
     for(let song of listDetail.tracks){
       musicUrlHelper.musicId=song.id;
       console.log(`歌曲的ID是：${musicUrlHelper.musicId}`);
