@@ -27,18 +27,6 @@
 ### 加密核心代码
 这段代码传入对象后可以直接加密成符合网易云api加密的结果。
 ```javascript
-String.prototype.hexEncode = function () {
-    let hex, i
-
-    let result = ""
-    for (i = 0; i < this.length; i++) {
-        hex = this.charCodeAt(i).toString(16)
-        result += ("" + hex).slice(-4)
-    }
-    return result
-}
-
-
 // 生成随机数，size默认16
 function createSecretKey(size) {
     const keys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
