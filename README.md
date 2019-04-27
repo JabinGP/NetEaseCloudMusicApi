@@ -130,7 +130,7 @@ test();
 4. 通过`MusicManager`的`getUrlHelper`方法获取一个url获取器，需要将`id`传给
 `getUrlHelper`方法
 5. 通过`urlHelper`的`getUrlResult`方法获取url
-6. 需要注意的是，由于网易云接口时常返回空回复，所以这里我通过20以内的重复次请求直到有结果就停止，如果20次以后还是没有结果（据我测试20次以内都请求到结果了），也就是返回一个空的字符串""，需要使用者自己重新调用一次`urlHelper`的`getUrlResult`方法
+6. ~~需要注意的是，由于网易云接口时常返回空回复，所以这里我通过20以内的重复次请求直到有结果就停止，如果20次以后还是没有结果（据我测试20次以内都请求到结果了），也就是返回一个空的字符串""，需要使用者自己重新调用一次`urlHelper`的`getUrlResult`方法~~（2019.04.27）现在不会返回空值了，返回空值发现问题出在使用微信请求时自作聪明将json转成了a=xxxx&b=xxx的格式，导致微信不能正常转换请求数据，现在每次请求都能获取结果。  
 代码实例
 ```javascript
 const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
