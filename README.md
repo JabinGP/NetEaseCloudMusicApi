@@ -1,5 +1,4 @@
 # NetEaseCloudMusicApi
----
 小程序网易云音乐api模块
 > 之前我们已经开发过一款小程序适用的qq音乐api库https://github.com/FisherWY/QQMusicPlugin了，这次开发网易云音乐api库的原因是qq音乐api库在小程序中iOS环境下无法使用小程序提供的背景音频播放器播放的问题
 
