@@ -1,3 +1,6 @@
+# NetEaseCloudMusicApi
+---
+小程序网易云音乐api模块
 > 之前我们已经开发过一款小程序适用的qq音乐api库https://github.com/FisherWY/QQMusicPlugin了，这次开发网易云音乐api库的原因是qq音乐api库在小程序中iOS环境下无法使用小程序提供的背景音频播放器播放的问题
 
 > 网易云的加密算法真的比其他几家api复杂太多了。。。完爆QQ和酷狗
@@ -99,21 +102,21 @@ const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
 
 ###  MusicManager
 该类有以下方法：该类提供了所有获取其他对象的方法，可以通过该类获取其他需要的对象而不是new
-- `getMusicSearchHelper()` 
-需要参数：`{keyword:"搜索歌曲关键词",limit:数字}`
-返回：`MusicSearchHelper`搜索器
-- `getMusicUrlHelper()`
- 需要参数：`musicId`（数字类型的歌曲id）
-返回：`MusicUrlHelper`Url获取器
+- `getMusicSearchHelper()`   
+需要参数：`{keyword:"搜索歌曲关键词",limit:数字}`  
+返回：`MusicSearchHelper`搜索器  
+- `getMusicUrlHelper()`  
+ 需要参数：`musicId`（数字类型的歌曲id）  
+返回：`MusicUrlHelper`Url获取器  
 - `getUserSearchHelper()`
-需要参数：`{userName:"搜索用户的用户名关键词",limit:数字}`
-返回：`UserSearchHelper`用户查询器
-- `getUserListHelper()`
-需要参数：`userId`（数字类型的用户id值）
-返回：`UserListHelper`用户列表查询器
-- `getUserListDetailHelper()`
-需要参数：`listId`（数字类型的列表id）
-返回：`UserListDetailHelper`用户列表详情信息获取器
+需要参数：`{userName:"搜索用户的用户名关键词",limit:数字}`  
+返回：`UserSearchHelper`用户查询器  
+- `getUserListHelper()`  
+需要参数：`userId`（数字类型的用户id值）  
+返回：`UserListHelper`用户列表查询器  
+- `getUserListDetailHelper()`  
+需要参数：`listId`（数字类型的列表id）  
+返回：`UserListDetailHelper`用户列表详情信息获取器  
 
 ### MusicSearchHelper
 用于搜索音乐
