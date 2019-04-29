@@ -1,8 +1,7 @@
-# NetEaseCloudMusicApi
-小程序网易云音乐api模块
-> 之前我们已经开发过一款小程序适用的qq音乐api库了https://github.com/FisherWY/QQMusicPlugin，这次开发网易云音乐api库的原因是qq音乐api库在小程序中iOS环境下无法使用小程序提供的背景音频播放器播放的问题
+> 之前我们已经开发过一款小程序适用的qq音乐api库https://github.com/FisherWY/QQMusicPlugin了，这次开发网易云音乐api库的原因是qq音乐api库在小程序中iOS环境下无法使用小程序提供的背景音频播放器播放的问题
 
 > 网易云的加密算法真的比其他几家api复杂太多了。。。完爆QQ和酷狗
+
 
 ### 依赖
 本api库参考了Github上面开源的node库，因为我们只想要查找音乐和播放音乐这两个功能，虽然Github那个库很方便，但是我们不想为了两个接口特意去跑一个node.js服务。Github上的库
@@ -89,18 +88,70 @@ function Encrypt(obj) {
 4. `NetEaseCloudMusicApi/Libary`文件夹里面包含了项目依赖的js文件，应用的时候最好整个`NetEaseCloudMusicApi`文件夹复制到项目里面使用。
 5. 测试的时候可以勾选不校验合法域名。
 ![1](https://upload-images.jianshu.io/upload_images/14225973-b53fa739408a3105.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+### 开始使用之前的准备
+1. 找到NetEaseCloudMusicApi这个文件夹，里面应该包括Libary、src、ts_src三个文件夹，Libary是我引用的开源库，ts_src中是TypeScript源文件，src是ts_src编译后产生的JavaScript文件夹，也就是说不考虑读ts源文件的话，可以把ts_src删了，但是17.4 KB 的大小对应用包体积应该没有什么影响吧，留着也行。
+2. 在要使用到的库中如下引用
+```
+const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
+```
+注意要用花括号吧`MusicManager`括起来，这一句可以需要变化的地方只有
+`../../NetEaseCloudMusicApi/src/MusicManager`中的`../../`，后面的路径都代表了`NetEaseCloudMusicApi`文件夹和`NetEaseCloudMusicApi`里面文件的路径，因为我的库就是这样的结构，所以不需要改变，`../../`就要根据你项目中实际结构来改变了。
+
+###  MusicManager
+该类有以下方法：该类提供了所有获取其他对象的方法，可以通过该类获取其他需要的对象而不是new
+- `getMusicSearchHelper()` 
+需要参数：`{keyword:"搜索歌曲关键词",limit:数字}`
+返回：`MusicSearchHelper`搜索器
+- `getMusicUrlHelper()`
+ 需要参数：`musicId`（数字类型的歌曲id）
+返回：`MusicUrlHelper`Url获取器
+- `getUserSearchHelper()`
+需要参数：`{userName:"搜索用户的用户名关键词",limit:数字}`
+返回：`UserSearchHelper`用户查询器
+- `getUserListHelper()`
+需要参数：`userId`（数字类型的用户id值）
+返回：`UserListHelper`用户列表查询器
+- `getUserListDetailHelper()`
+需要参数：`listId`（数字类型的列表id）
+返回：`UserListDetailHelper`用户列表详情信息获取器
+
+### MusicSearchHelper
+用于搜索音乐
+可用方法：
+- `getSearchResult()`---获取数据（默认第一页）
+-  `nextPage()`--- 下一页
+- `previousPage()`---上一页
+- `getCurrentPage()`---查看当前页数的
+执行完切换页数后需要再次调用`getSearchResult`方法查看新的查询结果。
+### MusicUrlHelper
+用于将搜索音乐结果中的id转换为url播放链接
+可用方法：
+- `getUrlResult()` ---获取url播放链接
+
+### UserSearchHelper
+用于根据用户名关键字搜索用户
+可用方法：
+- `getSearchResult()`---获取搜索结果
+
+### UserListHelper
+用于获取用户id后根据id获取用户歌单信息
+可用方法：
+- `getAllLists()`---获取用户所有歌单
+- `getILikeList()`---获取用户的我喜欢歌单
+
+### UserListDetailHelper
+用于获取歌单id后获取歌单内歌曲列表
+可用方法：
+- `getDeatil()`---获取歌单内列表
 
 ### 搜索歌曲
-搜索歌曲需要的参数有两个
-1. 歌曲名关键字
-2. 希望返回的数据数量（用于查询结果分页分次查询）
-
-使用说明
-1. 首先引入`MusicManager`常量
-2. 通过`MusicManager`的`getSearchHelper`方法获取一个查询器`searchHelper`，需要将参数传入`getSearchHelper`方法
-3. 通过`searchHelper`的`getSearchResult`方法获取数据（默认第一页）
-4. 可以通过`searchHelper`的`nextPage`、`previousPage`、`getCurrentPage`对应进行下一页，上一页，和查看当前页数的操作
-5. 执行完切换页数后可以再次调用`getSearchResult`方法查看新页数的查询结果
+1. 通过`MusicManager`获取一个`MusicSearchHelper`搜索器
+2.  `MusicSearchHelper`的方法：
+    - `getSearchResult()`---获取数据（默认第一页）
+    -  `nextPage()`--- 下一页
+    - `previousPage()`---上一页
+    - `getCurrentPage()`---查看当前页数的
+3. 执行完切换页数后需要再次调用`getSearchResult`方法查看新的查询结果。
 
 代码实例
 ```javascript
@@ -124,13 +175,9 @@ test();
 
 ### 通过搜索歌曲的结果获取音乐Url
 有了搜索结果，我们还需要url才能播放资源
-1. 首先引入`MusicManager`常量
-2. 假设已经从上面获取了一个音乐查询结果
-3. 从查询结果里面获取音乐id值
-4. 通过`MusicManager`的`getUrlHelper`方法获取一个url获取器，需要将`id`传给
-`getUrlHelper`方法
-5. 通过`urlHelper`的`getUrlResult`方法获取url
-6. ~~需要注意的是，由于网易云接口时常返回空回复，所以这里我通过20以内的重复次请求直到有结果就停止，如果20次以后还是没有结果（据我测试20次以内都请求到结果了），也就是返回一个空的字符串""，需要使用者自己重新调用一次`urlHelper`的`getUrlResult`方法~~（2019.04.27）现在不会返回空值了，返回空值发现问题出在使用微信请求时自作聪明将json转成了a=xxxx&b=xxx的格式，导致微信不能正常转换请求数据，现在每次请求都能获取结果。  
+1. 通过`MusicManager`获取一个`MusicUrlHelper`Url获取器
+2. 通过`MusicUrlHelper`的`getUrlResult`方法获取url
+3. ~~需要注意的是，由于网易云接口时常返回空回复，所以这里我通过20以内的重复次请求直到有结果就停止，如果20次以后还是没有结果（据我测试20次以内都请求到结果了），也就是返回一个空的字符串""，需要使用者自己重新调用一次`urlHelper`的`getUrlResult`方法~~(2019.04.27）现在不会返回空值了，返回空值发现问题出在使用微信请求时自作聪明将json转成了a=xxxx&b=xxx的格式，导致微信不能正常转换请求数据，现在每次请求都能获取结果。 
 代码实例
 ```javascript
 const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
@@ -164,8 +211,8 @@ test();
 ### 4.26更新
 新增搜索用户以及用户歌单获取接口
 #### 搜索用户
-MusicManager.getUserSearchHelper()方法，需要传入对象如{ userName: "JabinGP", limit: 20 }，分别代表用户名和最大查询数目
-，调用方法后获取一个UserSearchHelper实例，通过这个实例的getSearchResult()方法获取搜索结果。
+1. 通过`MusicManager`获取一个`UserSearchHelper`用户查询器
+2. 通过`UserSearchHelper`的`getSearchResult()`方法获取搜索结果
 ```javascript
 async function test(){
   // 搜索用户
@@ -175,7 +222,10 @@ async function test(){
 }
 ```
 #### 获取用户歌单
-MusicManager.getUserListHelper()方法，需要传入一个用户id。该方法返回一个UserListHelper实例，通过实例的getILikeList()方法或者getAllLists()方法获取我喜欢列表或者获取所有列表，前者返回一个数组，后者返回一个对象。
+1. 通过`MusicManager`获取一个`UserListHelper`用户查询器
+2. 通过`UserListHelper`的
+    - `getILikeList()` ---获取我喜欢歌单，返回一个列表对象
+    - `getAllLists() `---获取所有歌单，返回一个列表对象的数组
 ```javascript
 async function test(){
   // 搜索用户
@@ -249,5 +299,4 @@ test();
 > 2019 4.26更新搜索用户和获取用户歌单以及获取歌单详细三个接口。
 
 *如果对你有帮助，点个Star吧~*
-
 
