@@ -8,7 +8,7 @@ const {MusicManager} = require("../../NetEaseCloudMusicApi/src/MusicManager");
 // console.log(a);
 async function test(){
     // 搜索歌曲
-    let musicSearchHelper = MusicManager.getMusicSearchHelper({ keyword: "one more time one more chance", limit: 10 });
+    let musicSearchHelper = MusicManager.getMusicSearchHelper({ keyword: "李志", limit: 10 });
     console.log(`现在是第${musicSearchHelper.getCurrentPage()}页`);
     console.log(await musicSearchHelper.getSearchResult());
     musicSearchHelper.nextPage();
@@ -21,11 +21,16 @@ async function test(){
 
     // 获取歌曲url
     let songs = await musicSearchHelper.getSearchResult();
-    let musicId  = songs[0].id;
-    let musicUrlHelper = MusicManager.getMusicUrlHelper(musicId);
-    console.log(`歌曲的ID是：${musicId}`);
-    let url = await musicUrlHelper.getUrlResult();
-    console.log(`歌曲的url链接是：${url}`);
+    if(songs.length!=0){
+      console.log("查找到音乐");
+      let musicId  = songs[0].id;
+      let musicUrlHelper = MusicManager.getMusicUrlHelper(musicId);
+      console.log(`歌曲的ID是：${musicId}`);
+      let url = await musicUrlHelper.getUrlResult();
+      console.log(`歌曲的url链接是：${url}`);
+    }else{
+      console.log("没有查找到音乐");
+    }
 
     // 搜索用户
     let userSearchHelper = MusicManager.getUserSearchHelper({ userName: "JabinGP", limit: 20 });
@@ -43,7 +48,7 @@ async function test(){
     console.log(listDetail);
     let timer=0;
     for(let song of listDetail.tracks){
-      musicUrlHelper.musicId=song.id;
+      let musicUrlHelper = MusicManager.getMusicUrlHelper(song.id);
       console.log(`歌曲的ID是：${musicUrlHelper.musicId}`);
       let url2 = await musicUrlHelper.getUrlResult();
       console.log(`歌曲的url链接是：${url2}`);

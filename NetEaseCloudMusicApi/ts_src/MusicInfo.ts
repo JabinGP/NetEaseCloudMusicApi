@@ -16,7 +16,7 @@ export class MusicInfo{
     }
     public static buildByPostResult(postResult):Array<MusicInfo>{
         let songList:Array<MusicInfo> = new Array<MusicInfo>();
-        if(postResult.data.result.songs){
+        if(postResult.data.result){
             let songs:any = postResult.data.result.songs;
             for(let song of songs){
                 let newMusicInfo = new MusicInfo(song.id,song.name,song.album.picUrl,song.artists[0].name);
